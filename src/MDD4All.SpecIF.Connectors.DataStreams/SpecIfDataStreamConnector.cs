@@ -20,11 +20,18 @@ namespace MDD4All.SpecIF.Connectors.DataStreams
             } 
         }
 
-        private void OnSpecIfDataReceived(object eventSource, List<DataModels.Resource> specIfData)
+        private void OnSpecIfDataReceived(object eventSource, SpecIfDataEventArguments specIfData)
         {
-            if(_specIfDataPublisher != null)
+            if (_specIfDataPublisher != null)
             {
-                _specIfDataPublisher.PublishData(specIfData);
+                if (specIfData.Metadata != null)
+                {
+                    _specIfDataPublisher.PublishData(specIfData.Data, specIfData.Metadata);
+                }
+                else
+                {
+                    _specIfDataPublisher.PublishData(specIfData.Data);
+                }
             }
         }
     }
